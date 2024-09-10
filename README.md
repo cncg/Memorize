@@ -1,7 +1,27 @@
-# Memorize - ios application using swift and swiftUI 2024
+# Memory Card Game
 
-Following the Stanford iOS Development course in 2023, I am working on the game taught within the course. This game is highly known and enjoyed all over the world. It is a card Memory Game! 
+A simple memory card game built with SwiftUI, based on the Stanford SwiftUI course. The goal is to match pairs of cards by remembering their positions after they’re flipped back over.
 
-This application is very simple and showcases a memory game using cards, animations and images for iOS. You pick a card and it shows you a picture, then you flip another card in hopes it is a match! You exercise your memory and hope to match the cards to their respective pictures. 
+## Features
 
-More information will be added here to the readme.MD as the application progresses. Enjoy! 
+- **Card Matching**: Flip two cards at a time to find a match.
+- **Randomized Deck**: Cards shuffle every new game.
+- **Simple Gameplay**: Easy to pick up and play.
+
+## How to Play
+
+1. Tap a card to flip it over.
+2. Flip another card to find a match.
+3. If they match, they stay face up. If not, they flip back down.
+4. Match all pairs to win the game.
+
+## Requirements
+
+- Xcode 14.0+
+- iOS 15.0+
+
+## Installation
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/yourusername/memory-card-game.git
