@@ -19,7 +19,7 @@
 //  ARRAYS START AT 0! index number 0 is the start, the number one, the first.
 //- What is alternate array notation?
 //  PRACTICE DRY. DONT REPEAT YOURSELF. REPEATED CODE? FIX IT !
-//- What is ForEach? And how does the RANGE of integers or sequence work?
+//- What is ForEach? And how does the RANGE of integers or sequence work? Is this a tradional for loop?
 //
 //
 
@@ -33,15 +33,10 @@ struct ContentView: View {
     let emojis = ["👻","🎃","🕷️","☠️"]
     
     var body: some View {
-        HStack {
-            ForEach(0..<4,id: \.self) { index in
-                CardView(content: emojis[index])        // what happens if you change this to 2?
+        HStack {        // creating a ForEach instead of repeating CardView() four times.
+            ForEach(emojis.indices,id: \.self) { index in   // emojis.indicies will display the whole array index. If you add to the emojis array it will appear instead of needing to manually add.
+                CardView(content: emojis[index])
             }
-//            CardView(content: emojis[0], isFaceUp: true)
-//            CardView(content: emojis[1], isFaceUp: true)
-//            CardView(content: emojis[2], isFaceUp: true)
-//            CardView(content: emojis[3], isFaceUp: true)
-//   this needs a loop instead. this is repeated code. now we use the ForEach
         }
         .foregroundColor(.orange)
         .padding()
@@ -56,7 +51,7 @@ struct CardView: View {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 12)
             if isFaceUp {
-                base.fill(.white)     // using the constant instead of repeating roundedrectangle
+                base.fill(.white)     // using the constant "base" instead of repeating roundedrectangle
                 base.strokeBorder(lineWidth: 3)
                 Text(content)
                     .font(.largeTitle)
