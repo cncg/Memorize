@@ -24,6 +24,9 @@
 //- What is Image(systemName:) Lookup? Using the plus sign on the top right of the XCode Interface?
 //  We added an if statement to stop the app from crashing when removing all cards or adding too many. It crashes without the if statement. Why? Do you understand what is happening?
 //- What is implicit return?
+//- Internal vs External parameter names
+//- What is opacity ? Why change the if else in ViewBuilder to do opacity instead. Changing the isFaceUp form an if else is because when using the if statement, if the card was face down, it would completly change the state of thhe card and there would be no emoji in the content anymore; shrinking the card to nothing. when using opacity you can still have the front or back of the card with emoji in tact it will jsut be invisible when toggled, making sure nothing is shrinked.
+//- What is Group?
 //
 
 
@@ -36,16 +39,21 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            cards
+            ScrollView {
+                cards
+            }
+            
+            Spacer()
             cardCountAdjusters
         }
         .padding()
     }
     
     var cards : some View {
-        HStack {
+        LazyVGrid(columns:[GridItem(.adaptive(minimum:120))]) {
             ForEach(0..<cardCount,id: \.self) { index in        // need more learning
                 CardView(content: emojis[index])
+                    .aspectRatio(2/3, contentMode: .fit)
             }
         }
         .foregroundColor(.orange)
@@ -68,20 +76,15 @@ struct ContentView: View {
         }, label: {
             Image(systemName: symbol)
         })
+        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
     }
-  
+    
     var cardRemover : some View {
         return cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
     }
     
     var cardAdder : some View {
-        Button(action: {
-            if cardCount < emojis.count {
-                cardCount += 1
-            }
-        }, label: {
-            Image(systemName: "rectangle.stack.badge.plus.fill")
-        })
+        return cardCountAdjuster(by: +1, symbol: "rectangle.stack.badge.plus.fill")
     }
 }
 
@@ -93,14 +96,15 @@ struct CardView: View {
     var body: some View {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 12)
-            if isFaceUp {
+            Group {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 3)
                 Text(content)
                     .font(.largeTitle)
-            } else {
-                base.fill()
             }
+            .opacity(isFaceUp ? 1 : 0)
+            base.fill().opacity(isFaceUp ? 0 : 1)
+            
         }
         .onTapGesture {
             isFaceUp.toggle()
