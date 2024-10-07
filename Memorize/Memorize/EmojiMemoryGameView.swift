@@ -1,5 +1,5 @@
 //  Created by cncg on 8/14/24.
-//  ContentView.swift
+//  EmojiMemoryGameView.swift
 //  Stanford Memorize App
 //
 // NOTES TO TRANSFER TO NOTEBOOK 9/11/2024 - DAY THREE
@@ -20,48 +20,57 @@
 //- What is Group?
 //- What is a LazyVGrid?
 //- How can I know when to add logic or a function?
-
+//- what is semantic renaming and refactoring?
 
 import SwiftUI
 
 
-// now fix the toggle, you fucked the code up you had and what you did is gone! great work ! now we are using the code the professor used. you didnt have the adder and remvoer at te bottom of the screen and the cards didnt have an aspect ratio. now oyu need to add the card toggle, to isfaceup. fix it
-
-struct ContentView: View {
-    let emojis = ["👻","🎃","🕷️","⚰️","🧟‍♂️","🍬", "🍭", "💀", "🧛‍♂️", "🧙‍♀️", "🕸️", "👽"]
+struct EmojiMemoryGameView: View {
     
-    @State var cardCount: Int = 4
+    var viewModel : EmojiMemoryGame = EmojiMemoryGame()
     
     var body: some View {
         ScrollView {
             cards
-            
         }
         .padding()
     }
     
     var cards: some View {
         LazyVGrid(columns:[GridItem(.adaptive(minimum:125))]) {
-            ForEach(emojis.indices, id: \.self) { index in
-                CardView(content: emojis[index])
+            ForEach(viewModel.cards.indices, id: \.self) { index in
+                CardView(viewModel.cards[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
         }
-        .foregroundColor(.orange)
+        .foregroundColor(Color.orange)
     }
 }
 
 struct CardView: View {
-    let content: String
+    let card : MemoryGame<String>.Card
+    
+    init(_ card: MemoryGame<String>.Card) {
+        self.card = card
+    }
+     
     var body: some View {
         ZStack {
             let base = RoundedRectangle(cornerRadius: 12)
-            base.strokeBorder(lineWidth: 2)
-            Text(content).font(.largeTitle)
+            Group {
+                base.fill(.white)
+                base.strokeBorder(lineWidth: 3)
+                Text(card.content).font(Font.largeTitle)
+            }
+            .opacity(card.isFaceUp ? 1 : 0)
+            base.fill()
+                .opacity(card.isFaceUp ? 0 : 1)
         }
     }
 }
 
-#Preview {
-    ContentView()
+struct EmojiMemoryGameView_Previews : PreviewProvider {
+    static var previews: some View {
+        EmojiMemoryGameView()
+    }
 }
